@@ -22,6 +22,7 @@ int main(){
 				cout<<"Turno de Player 1 (+)"<<endl;
 				if(verTurno(tablero,'+')){
 					moverPieza(tablero,'+');
+					cout<<endl;
 				}else{
 					if(cuentapiezas(tablero)){
 						winplayer1=true;
@@ -36,6 +37,7 @@ int main(){
 				cout<<"Turno de Player 2 (#)"<<endl;
 				if(verTurno(tablero,'#')){
 					moverPieza(tablero,'#');
+					cout<<endl;
 						
 				}else{
 					if(cuentapiezas(tablero)){
@@ -158,20 +160,101 @@ void moverPieza(char** tablero, char turno){
 			cout<<"ERROR LA PIEZA YA ESTA EN ESA CASILA -_-"<<endl;
 			validarpieza=0;
 		}
-		else if((filam<filap-2 || filam>filap+2) || (columnam>columnap+2 || columnam<columnap-2)){
+		else if((filam<filap-2 || filam>filap+2) || (columnam>columnap+2 || columnam<columnap-2)||(tablero[filam][columnam]!='.')){
 			cout<<"ERROR NO PUEDES MOVER TU PIEZA AHI"<<endl;
 			validarpieza=0;
 		}else{
 			validarpieza=1;
 			if((filam < filap-1 || filam > filap+1)  ||(columnam < columnap-1 || columnam > columnap+1)){//se movio dos casillas
-				tablero[filap][columnap] ='.';
-				tablero[filam][columnam]=turno;
-				cout<<"PIEZA SE MOVIO!"<<endl;
+				if(filam<filap-1 && columnam<columnap-1){
+					if(tablero[filap-1][columnap-1]!='.'){
+						cout<<"ERROR HAY UNA PIEZA EN MEDIO"<<endl;
+						validarpieza=0;
+					}else{
+						
+						tablero[filap][columnap] ='.';
+						tablero[filam][columnam]=turno;
+						cout<<"PIEZA SE MOVIO!"<<endl;
+					}
+				}else if(filam<filap-1 && columnam==columnap){
+					if(tablero[filap-1][columnap]!='.'){
+						cout<<"ERROR HAY UNA PIEZA EN MEDIO"<<endl;
+						validarpieza=0;
+					}else{
+						tablero[filap][columnap] ='.';
+						tablero[filam][columnam]=turno;
+						cout<<"PIEZA SE MOVIO!"<<endl;
+					}
+				}else if(filam<filap-1 && columnam>columnap+1){
+					if(tablero[filap-1][columnap+1]!='.'){
+					
+						cout<<"ERROR HAY UNA PIEZA EN MEDIO"<<endl;
+						validarpieza=0;
+					}else{
+					
+						tablero[filap][columnap] ='.';
+						tablero[filam][columnam]=turno;
+						cout<<"PIEZA SE MOVIO!"<<endl;
+					}
+				}else if(filam==filap && columnam>columnap+1){
+					if(tablero[filap][columnap+1]!='.'){
+					
+						cout<<"ERROR HAY UNA PIEZA EN MEDIO"<<endl;
+						validarpieza=0;
+					}else{
+					
+						tablero[filap][columnap] ='.';
+						tablero[filam][columnam]=turno;
+						cout<<"PIEZA SE MOVIO!"<<endl;
+					}
+				}else if(filam>filap+1 && columnam>columnap+1){
+					if(tablero[filap+1][columnap+1]!='.'){
+					
+						cout<<"ERROR HAY UNA PIEZA EN MEDIO"<<endl;
+						validarpieza=0;
+					}else{
+					
+						tablero[filap][columnap] ='.';
+						tablero[filam][columnam]=turno;
+						cout<<"PIEZA SE MOVIO!"<<endl;
+					}
+				}else if(filam>filap+1&&columnam==columnap){
+					if(tablero[filap+1][columnap]!='.'){
+					
+						cout<<"ERROR HAY UNA PIEZA EN MEDIO"<<endl;
+						validarpieza=0;
+					}else{
+					
+						tablero[filap][columnap] ='.';
+						tablero[filam][columnam]=turno;
+						cout<<"PIEZA SE MOVIO!"<<endl;
+					}
+				}else if(filam>filap+1&&columnam<columnap-1){
+					if(tablero[filap+1][columnap-1]){
+					
+						cout<<"ERROR HAY UNA PIEZA EN MEDIO"<<endl;
+						validarpieza=0;
+					}else{
+						tablero[filap][columnap] ='.';
+						tablero[filam][columnam]=turno;
+						cout<<"PIEZA SE MOVIO!"<<endl;
+					}
+				}else if(filam==filap && columnam<columnap-1){
+					if(tablero[filap][columnap-1]!='.'){
+						cout<<"ERROR HAY UNA PIEZA EN MEDIO"<<endl;
+						validarpieza=0;
+					}else{
+						tablero[filap][columnap] ='.';
+						tablero[filam][columnam]=turno;
+						cout<<"PIEZA SE MOVIO!"<<endl;
+					}
+				}
+
 			}else{//se movio una
 				tablero[filam][columnam]=turno;
 				cout<<"PIEZA CLONADA!"<<endl;
 			}
-
+			cout<<endl;
 			
 			
 		}
