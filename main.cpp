@@ -4,38 +4,57 @@ using namespace std;
 char** createMatrix(int);
 void printMatrix(char**,int);
 void iniciarTablero(char**,int);
-void moverPieza(char**,char);
+int moverPieza(char**,char);
 void deleteMatrix(char**, int);
 void comer(char**,int,int, char);
-
+bool verTurno(char**);
+bool cuentapiezas(char**);
 int main(){
-	string player1, player2;
-	bool win=false;
+	bool winplayer1=false,winplayer2=false;
 	int turno = 0;
-	cout<<"Ingrese nombre de jugador 1:"<<endl;
-	cin>>player1;
-	cout<<"Ingrese nombre jugador 2:"<<endl;
-	cin>>player2;
 	char** tablero=createMatrix(11);
 	iniciarTablero(tablero,11);
 	
-	while(!win){
+	while(!winplayer1 && !winplayer2){
 		switch(turno){
 			case 0:
 				printMatrix(tablero,11);
-				cout<<"Turno de "<<player1<<" (+)"<<endl;
-				moverPieza(tablero,'+');
-				comer(tablero,'#')
+				cout<<"Turno de Player 1 (+)"<<endl;
+				if(verTurno(tablero)){
+					moverPieza(tablero,'+');
+				}else{
+
+					if(cuentapiezas){
+						winplayer1=true;
+					}else{
+						winplayer2=true;
+					}
+				}
 				turno=1;
 				break;
 			case 1:
 				printMatrix(tablero,11);
-				cout<<"Turno de "<<player2<<" (#)"<<endl;
-				moverPieza(tablero,'#');
-				comer(tablero,'+');
+				cout<<"Turno de Player 2 (#)"<<endl;
+				if(verTurno(tablero)){
+					moverPieza(tablero,'#');
+						
+				}else{
+					if(cuentapiezas){
+						winplayer1=true;
+					}else{
+						winplayer2=true;
+					}
+					
+				}
 				turno=0;
 				break;
 		}
+	}
+	if(winplayer1){
+		cout<<"FELICIDADES PLAYER 1 HAS GANADO"<<endl;
+
+	}else{
+		cout<<"FELICIDADES PLAYER 2 HAS GANADO"<<endl;
 	}
 	deleteMatrix(tablero,11);
 	return 0;
@@ -87,7 +106,7 @@ void printMatrix(char** matrix,int size){
 }
 
 //mover pieza
-void moverPieza(char** tablero, char turno){
+int moverPieza(char** tablero, char turno){
 	int filap=0,columnap=0,filam=0,columnam=0,
 	    validarpieza=0;//validarpieza revisa si la 
 			  //pieza seleccionada es del player y ademas si la casilla adonde quiere moverse es valida.
@@ -95,8 +114,11 @@ void moverPieza(char** tablero, char turno){
 	
 	while(validarpieza==0){//que la pieza sea de el
 		
-		cout<<"Ingrese NUMERO DE FILA de posicion de pieza que desea mover:"<<endl;
+		cout<<"Ingrese NUMERO DE FILA de posicion de pieza que desea mover (INGRESA 69 SI QUIERES SALTAR TURNO O NO TIENES OPCION PARA MOVERTE):"<<endl;
 		cin>>filap;
+		if(filap==69){
+			return 0;
+		}
 		while(filap<0 || filap>10){
 			cout<<"ERROR FILA NO VALIDA INGRESE DE NUEVO:"<<endl;
 			cin>>filap;
@@ -161,7 +183,7 @@ void moverPieza(char** tablero, char turno){
 	}
 	comer(tablero,filam,columnam,turno);
 
-
+	return 0;
 }
 
 //comer piezas si se puede
@@ -172,7 +194,76 @@ void comer(char** tablero,int fila, int columna, char turno){
 	}else if(turno=='#'){
 		enemigo='+';
 	}
-	if(tablero 
+	if(tablero[fila+1][columna+1]==enemigo)
+		tablero[fila+1][columna+1]=turno;
+
+	if(tablero[fila-1][columna-1]==enemigo)
+		tablero[fila-1][columna-1]=turno;
+
+	if(tablero[fila][columna+1]==enemigo)
+		tablero[fila][columna+1]=turno;
+
+	if(tablero[fila][columna-1]==enemigo)
+		tablero[fila][columna-1]=turno;
+
+	if(tablero[fila+1][columna]==enemigo)
+		tablero[fila+1][columna]=turno;
+
+	if(tablero[fila-1][columna]==enemigo)
+		tablero[fila-1][columna]=turno;
+
+	if(tablero[fila+1][columna-1]==enemigo)
+		tablero[fila+1][columna-1]=turno;
+
+	if(tablero[fila-1][columna+1]==enemigo)
+		tablero[fila-1][columna+1]=turno;
+
+
+}
+
+//revisa que el turno del jugador actual puede ser jugado
+bool verTurno(char** tablero){
+	int size=11,cantEspacios=0;
+	for(int i=0;i<size;i++){
+		for(int j=0;j<size;j++){
+			if(tablero[i][j]='.'){
+				cantEspacios++;			
+			}
+
+		}
+	}
+	if(cantEspacios==0){
+		return false;
+	}else{
+		return true;
+	}
+
+}
+
+//cuenta las piezas al final. si player 1 tiene mas, retorna true, si no, false
+bool cuentapiezas(char** tablero){
+	int size=11,cantP1=0,cantP2=0;
+        for(int i=0;i<size;i++){
+                for(int j=0;j<size;j++){
+                        switch(tablero[i][j]){
+				case '+':
+					cantP1++;
+				break;
+				case '#':
+					cantP2++;
+				break;
+			}
+
+                }
+        }
+	cout<<"Piezas Player 1: "<<cantP1<<endl;
+	cout<<"Piezas Player 2: "<<cantP2<<endl;
+        if(cantP1>cantP2){
+                return true;
+        }else{
+                return false;
+        }
+
 
 }
 
