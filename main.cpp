@@ -7,6 +7,8 @@ void iniciarTablero(char**,int);
 
 int main(){
 	string player1, player2;
+	bool win=false;
+	int turno = 0;
 	cout<<"Ingrese nombre de jugador 1:"<<endl;
 	cin>>player1;
 	cout<<"Ingrese nombre jugador 2:"<<endl;
@@ -14,7 +16,23 @@ int main(){
 	char** tablero=createMatrix(11);
 	iniciarTablero(tablero,11);
 	printMatrix(tablero,11);
-
+	
+	while(!win){
+		switch(turno){
+			case 0:
+				printMatrix(tablero,11);
+				cout<<"Turno de "<<player1<<endl;
+				moverPieza();
+				turno=1;
+				break;
+			case 1:
+				printMatrix(tablero,11);
+				cout<<"Turno de "<<player2<<endl;
+				moverPieza();
+				turno=0;
+				break;
+		}
+	}
 
 	return 0;
 }
