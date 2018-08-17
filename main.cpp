@@ -1,6 +1,9 @@
+#include "reiniciar.h"
 #include <iostream>
 #include <string>
 using namespace std;
+
+
 char** createMatrix(int);
 void printMatrix(char**,int);
 char** iniciarTablero(char**,int);
@@ -9,56 +12,89 @@ void deleteMatrix(char**, int);
 void comer(char**,int,int, char);
 bool verTurno(char**,char);
 bool cuentapiezas(char**);
+
 int main(){
-	bool winplayer1=false,winplayer2=false;
-	int turno = 0;
-	char** tablero=createMatrix(11);
-	tablero = iniciarTablero(tablero,11);
+	reiniciar Reinicio=new reiniciar(true);
 	
-	while(!winplayer1 && !winplayer2){
-		switch(turno){
-			case 0:
-				printMatrix(tablero,11);
-				cout<<"Turno de Player 1 (+)"<<endl;
-				if(verTurno(tablero,'+')){
-					moverPieza(tablero,'+');
-					cout<<endl;
-				}else{
-					if(cuentapiezas(tablero)){
-						winplayer1=true;
+	while(Reinicio.getReinicio()){
+		bool winplayer1=false,winplayer2=false;
+		int turno = 0;
+		char** tablero=createMatrix(11);
+		tablero = iniciarTablero(tablero,11);
+	
+		while(!winplayer1 && !winplayer2){
+			switch(turno){
+				case 0:
+					printMatrix(tablero,11);
+					cout<<"Turno de Player 1 (+)"<<endl;
+					if(verTurno(tablero,'+')){
+						moverPieza(tablero,'+');
+						cout<<endl;
 					}else{
-						winplayer2=true;
+						if(cuentapiezas(tablero)){
+							winplayer1=true;
+						}else{
+							winplayer2=true;
+						}
 					}
-				}
-				turno=1;
+					turno=1;
 				break;
-			case 1:
-				printMatrix(tablero,11);
-				cout<<"Turno de Player 2 (#)"<<endl;
-				if(verTurno(tablero,'#')){
-					moverPieza(tablero,'#');
-					cout<<endl;
+				case 1:
+					printMatrix(tablero,11);
+					cout<<"Turno de Player 2 (#)"<<endl;
+					if(verTurno(tablero,'#')){
+						moverPieza(tablero,'#');
+						cout<<endl;
 						
-				}else{
-					if(cuentapiezas(tablero)){
-						winplayer1=true;
 					}else{
-						winplayer2=true;
-					}
+						if(cuentapiezas(tablero)){
+							winplayer1=true;
+						}else{
+							winplayer2=true;
+						}
 					
-				}
-				turno=0;
+					}
+					turno=0;
+				break;
+			}
+		}
+		if(winplayer1){
+			cout<<"FELICIDADES PLAYER 1 HAS GANADO"<<endl;
+
+		}else{
+			cout<<"FELICIDADES PLAYER 2 HAS GANADO"<<endl;
+		}
+		deleteMatrix(tablero,11);
+
+		cout<<"Desea Reiniciar?y/n"<<endl;
+		char resp;
+		cin>>resp;
+		while(resp!='y'&&resp!='Y'&&resp!='n'&&resp!='N'){
+			cout<<"ERROR RESPUESTA NO VALIDA"<<endl<<"Reiniciar?y/n"<<endl;
+			cin>>resp;		
+		}
+
+		switch(resp){
+			case 'y':
+				Reinicio.setReinicio(true);
+				
+				break;
+			case 'Y':
+				Reinicio.setReinicio(true);
+				
+				break;
+			case 'n':
+				Reinicio.setReinicio(false);
+				
+				
+				break;
+			case 'N':
+				Reinicio.setReinicio(false);
+				
 				break;
 		}
 	}
-	if(winplayer1){
-		cout<<"FELICIDADES PLAYER 1 HAS GANADO"<<endl;
-
-	}else{
-		cout<<"FELICIDADES PLAYER 2 HAS GANADO"<<endl;
-	}
-	deleteMatrix(tablero,11);
-	return 0;
+		return 0;
 }
 
 //crear matrix
@@ -82,7 +118,7 @@ char** iniciarTablero(char** tablero, int size){
 			}else if((i==5 && j==0)||(i==5&&j==10)){
 				tablero[i][j] = '#';
 			}else{
-				tablero[i][j]='.';
+				tablero[i][j]='#';
 			}
 
 		}
