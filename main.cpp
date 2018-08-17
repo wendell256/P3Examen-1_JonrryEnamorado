@@ -5,6 +5,8 @@ char** createMatrix(int);
 void printMatrix(char**,int);
 void iniciarTablero(char**,int);
 void moverPieza(char**,char);
+void deleteMatrix(char**, int);
+void comer(char**,int,int, char);
 
 int main(){
 	string player1, player2;
@@ -21,19 +23,21 @@ int main(){
 		switch(turno){
 			case 0:
 				printMatrix(tablero,11);
-				cout<<"Turno de "<<player1<<endl;
+				cout<<"Turno de "<<player1<<" (+)"<<endl;
 				moverPieza(tablero,'+');
+				comer(tablero,'#')
 				turno=1;
 				break;
 			case 1:
 				printMatrix(tablero,11);
-				cout<<"Turno de "<<player2<<endl;
+				cout<<"Turno de "<<player2<<" (#)"<<endl;
 				moverPieza(tablero,'#');
+				comer(tablero,'+');
 				turno=0;
 				break;
 		}
 	}
-
+	deleteMatrix(tablero,11);
 	return 0;
 }
 
@@ -84,24 +88,27 @@ void printMatrix(char** matrix,int size){
 
 //mover pieza
 void moverPieza(char** tablero, char turno){
-	int fila=0,columna=0,validarpieza=0;
+	int filap=0,columnap=0,filam=0,columnam=0,
+	    validarpieza=0;//validarpieza revisa si la 
+			  //pieza seleccionada es del player y ademas si la casilla adonde quiere moverse es valida.
+			  
 	
-	while(validarpieza==0){
+	while(validarpieza==0){//que la pieza sea de el
 		
 		cout<<"Ingrese NUMERO DE FILA de posicion de pieza que desea mover:"<<endl;
-		cin>>fila;
-		while(fila<0 && fila>10){
+		cin>>filap;
+		while(filap<0 || filap>10){
 			cout<<"ERROR FILA NO VALIDA INGRESE DE NUEVO:"<<endl;
-			cin>>fila
+			cin>>filap;
 		}
 	
 		cout<<"Ingrese NUMERO DE COLUMNA de posicion de pieza que desea mover:"<<endl;
-		cin>>columna;
-		while(columna<0 && columna>10){
+		cin>>columnap;
+		while(columnap<0 || columnap>10){
 			cout<<"ERROR COLUMNA NO VALIDA INGRESE DE NUEVO:"<<endl;
-			cin>>columna
+			cin>>columnap;
 		}
-		if(tablero[fila][columna]==turno){
+		if(tablero[filap][columnap]!=turno){
 			cout<<"ERROR NO HAY PIEZA TUYA EN ESA CASILLA"<<endl;
 			validarpieza=0;
 		}else{
@@ -110,5 +117,70 @@ void moverPieza(char** tablero, char turno){
 
 		
 	}
+	validarpieza =0;
+	cout<<"PIEZA SELECCIONADA EXITOSAMENTE!"<<endl;
+	while(validarpieza==0){//mover pieza
+		
+		cout<<"Ingrese NUMERO DE FILA de posicion adonde desea mover pieza:"<<endl;
+		cin>>filam;
+		while(filam<0 || filam>10){
+			cout<<"ERROR FILA NO VALIDA INGRESE DE NUEVO:"<<endl;
+			cin>>filam;
+		}
+	
+		cout<<"Ingrese NUMERO DE COLUMNA de posicion adonde desea mover pieza-:"<<endl;
+		cin>>columnam;
+		while(columnam<0 || columnam>10){
+			cout<<"ERROR COLUMNA NO VALIDA INGRESE DE NUEVO:"<<endl;
+			cin>>columnam;
+		}
+		
+		if(filam==filap && columnam==columnap){
+			cout<<"ERROR LA PIEZA YA ESTA EN ESA CASILA -_-"<<endl;
+			validarpieza=0;
+		}
+		else if((filam<filap-2 || filam>filap+2) || (columnam>columnap+2 || columnam<columnap-2)){
+			cout<<"ERROR NO PUEDES MOVER TU PIEZA AHI"<<endl;
+			validarpieza=0;
+		}else{
+			validarpieza=1;
+			if((filam < filap-1 || filam > filap+1)  ||(columnam < columnap-1 || columnam > columnap+1)){//se movio dos casillas
+				tablero[filap][columnap] ='.';
+				tablero[filam][columnam]=turno;
+				cout<<"PIEZA SE MOVIO!"<<endl;
+			}else{//se movio una
+				tablero[filam][columnam]=turno;
+				cout<<"PIEZA CLONADA!"<<endl;
+			}
 
+			
+			
+		}
+
+		
+	}
+	comer(tablero,filam,columnam,turno);
+
+
+}
+
+//comer piezas si se puede
+void comer(char** tablero,int fila, int columna, char turno){
+	char enemigo;
+	if(turno=='+'){
+		enemigo='#';
+	}else if(turno=='#'){
+		enemigo='+';
+	}
+	if(tablero 
+
+}
+
+//delete del tablero
+void deleteMatrix(char** tablero, int size){
+	char* temp;
+	for(int i;i<size;i++)
+		delete tablero[i];
+	
+	delete temp;
 }
