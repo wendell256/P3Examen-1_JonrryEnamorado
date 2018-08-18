@@ -118,7 +118,7 @@ char** iniciarTablero(char** tablero, int size){
 			}else if((i==5 && j==0)||(i==5&&j==10)){
 				tablero[i][j] = '#';
 			}else{
-				tablero[i][j]='#';
+				tablero[i][j]='.';
 			}
 
 		}
